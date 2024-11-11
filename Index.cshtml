@@ -1,0 +1,48 @@
+﻿@model PModuloLimitadorV.Models.IndexViewModel
+@{
+    ViewBag.Title = "Configurar cuenta";
+}
+
+<link rel="stylesheet" href="~/Content/css/manage.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+
+<main aria-labelledby="title">
+    <h2 id="title">@ViewBag.Title</h2>
+
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div>
+        <h4>Cambiar la configuración de la cuenta</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Contraseña:</dt>
+            <dd>
+                [
+                @if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Cambiar la contraseña", "ChangePassword")
+                }
+                else
+                {
+                    @Html.ActionLink("Crear", "SetPassword")
+                }
+                ]
+            </dd>
+            <dt>Inicios de sesión externos:</dt>
+            <dd>
+                @Model.Logins.Count [
+                @Html.ActionLink("Manage", "ManageLogins") ]
+            </dd>
+           
+            <dt>Autenticación de dos factores:</dt>
+            <dd>
+                <p>
+                    No hay ningún proveedor de autenticación en dos fases configurado. Consulte <a href="https://go.microsoft.com/fwlink/?LinkId=403804">este artículo</a>
+                    para obtener detalles sobre cómo configurar esta aplicación ASP.NET para que sea compatible con la autenticación en dos fases.
+                </p>
+               
+            </dd>
+        </dl>
+    </div>
+</main>

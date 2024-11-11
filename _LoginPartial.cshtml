@@ -1,0 +1,62 @@
+﻿@using System.Security.Claims;
+
+@{
+    ViewBag.Title = "Iniciar Sesion";
+
+    Layout = null;
+}
+
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @*Menu Perfil*@
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "text-white" })
+                    <a class="loguillo" href="https://localhost:44345/Manage">
+                        <img src="~/Content/imgs/User.png" alt="Logo-Perfil" class="User" width="25px" height="25px" srcset="">
+                    </a>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item-text" href="https://localhost:44345/Manage">Perfil</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item-text" href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesion</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    if (User.Identity.IsAuthenticated)
+    {
+
+        var claimsIdentity = User.Identity as System.Security.Claims.ClaimsIdentity;
+        var roleOfUser = claimsIdentity != null ? claimsIdentity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value : "Estudiante";
+
+        if (roleOfUser == "Admin")
+        {
+            <ul class="navbar-nav navbar-right">
+                <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })</li>
+            </ul>
+        }
+    }
+    else
+    {
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
+    }
+}
+
+<style>
+    li {
+        list-style-type: none; /* Esto quita el ::marker del elemento <li> */
+    }
+</style>
